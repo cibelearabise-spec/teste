@@ -3,90 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suno AI Player - Dark Theme</title>
-  <!-- Tailwind CSS via CDN para renderizar na hora -->
+  <title>Suno Player - Home</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Ícones do Lucide / Ionicons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            bgDark: '#0B0914',
-            cardBg: '#171326',
-            purpleNeon: '#A855F7',
-            purpleGlow: '#8B5CF6',
-          }
-        }
-      }
-    }
-  </script>
   <style>
-    body {
-      background-color: #0B0914;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
-    .glass-card {
-      background: rgba(23, 19, 38, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(168, 85, 247, 0.2);
-    }
-    .glow-sphere {
-      background: radial-gradient(circle at 30% 30%, #EC4899, #8B5CF6, #3B82F6);
-      box-shadow: 0 0 50px rgba(168, 85, 247, 0.6);
-    }
+    body { background-color: #0B0914; font-family: system-ui, sans-serif; }
+    .glass-card { background: rgba(23, 19, 38, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(168, 85, 247, 0.2); }
   </style>
 </head>
-<body class="text-white flex justify-center items-center min-h-screen p-4">
+<body class="text-white flex justify-center items-center min-h-screen p-2 sm:p-4">
 
-  <!-- Container simulando a tela de um celular -->
   <div class="w-full max-w-sm h-[750px] bg-[#0B0914] rounded-[40px] border-4 border-gray-800 p-5 flex flex-col justify-between relative overflow-hidden shadow-2xl">
     
-    <!-- Efeito de Luz de Fundo -->
+    <!-- Fundo Glow -->
     <div class="absolute -top-20 -left-20 w-48 h-48 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
 
-    <!-- Header -->
-    <div class="flex justify-between items-center z-10 pt-4">
-      <div>
-        <p class="text-gray-400 text-sm">Hello, Cibele 👋</p>
-        <h1 class="text-xl font-bold">Make anything you.</h1>
-      </div>
-      <span class="glass-card text-xs text-purple-300 font-semibold px-3 py-1.5 rounded-full flex items-center gap-1">
-        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Suno VIP
-      </span>
-    </div>
-
-    <!-- Conteúdo Central: Player Esférico Glow (Fiel à imagem) -->
-    <div class="flex flex-col items-center justify-center my-auto z-10">
-      <p class="text-gray-300 text-lg font-light mb-8">I'm listening...</p>
-
-      <!-- Esfera Roxa com Glow Neon -->
-      <div class="relative flex items-center justify-center w-48 h-48 mb-8">
-        <div class="absolute inset-0 rounded-full bg-purple-600/30 blur-xl animate-pulse"></div>
-        <div class="w-40 h-40 rounded-full glow-sphere flex items-center justify-center transition-transform hover:scale-105">
-          <i data-lucide="play" class="w-12 h-12 text-white fill-white ml-1"></i>
+    <div class="z-10 overflow-y-auto pr-1">
+      <!-- Topo -->
+      <div class="flex justify-between items-center pt-2 mb-6">
+        <div>
+          <p class="text-gray-400 text-sm">Hello 👋</p>
+          <h1 class="text-xl font-bold">Suno Player</h1>
         </div>
+        <span class="glass-card text-xs text-purple-300 font-semibold px-3 py-1.5 rounded-full flex items-center gap-1">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> VIP
+        </span>
       </div>
 
-      <h2 class="text-lg font-bold text-white">Cyberpunk Neon Vibe</h2>
-      <p class="text-xs text-gray-400 mt-1">Suno AI Generated Track</p>
+      <!-- Acesso Rápido ao Player -->
+      <div class="glass-card p-4 rounded-2xl mb-6 flex justify-between items-center">
+        <div>
+          <h3 class="font-bold text-sm">Player Estelar</h3>
+          <p class="text-xs text-gray-400">Ir para o tocador visual</p>
+        </div>
+        <a href="player.html" class="bg-purple-600 p-2.5 rounded-xl text-white hover:bg-purple-500">
+          <i data-lucide="play" class="w-5 h-5"></i>
+        </a>
+      </div>
+
+      <!-- Lista de Músicas -->
+      <h2 class="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wider">Suas Músicas Suno</h2>
+      <div id="trackList" class="space-y-3">
+        <!-- As músicas serão carregadas aqui via JavaScript -->
+      </div>
     </div>
 
-    <!-- Menu Inferior Neon (Bottom Nav) -->
-    <div class="glass-card rounded-full p-3 flex justify-around items-center z-10 mb-2">
-      <button class="text-purple-400 p-2"><i data-lucide="home"></i></button>
-      <button class="bg-purple-600 p-3 rounded-full text-white shadow-lg shadow-purple-500/50 hover:bg-purple-500">
+    <!-- Navegação Inferior -->
+    <div class="glass-card rounded-full p-3 flex justify-around items-center z-10 mt-2">
+      <a href="index.html" class="text-purple-400 p-2"><i data-lucide="home"></i></a>
+      <a href="add.html" class="bg-purple-600 p-3 rounded-full text-white shadow-lg shadow-purple-500/50 hover:bg-purple-500">
         <i data-lucide="plus"></i>
-      </button>
-      <button class="text-gray-400 p-2 hover:text-purple-400"><i data-lucide="disc"></i></button>
+      </a>
+      <a href="player.html" class="text-gray-400 p-2 hover:text-purple-400"><i data-lucide="disc"></i></a>
     </div>
 
   </div>
 
   <script>
-    // Inicializa os ícones do Lucide
     lucide.createIcons();
+
+    // Músicas Padrão caso o armazenamento esteja vazio
+    const defaultTracks = [
+      { id: '1', title: 'Cyberpunk Neon Vibe', genre: 'Synthwave / Suno AI', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+      { id: '2', title: 'Lo-Fi Chill Beats', genre: 'Relax / Suno AI', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' }
+    ];
+
+    function loadTracks() {
+      const stored = localStorage.getItem('suno_tracks');
+      const tracks = stored ? JSON.parse(stored) : defaultTracks;
+      if (!stored) localStorage.setItem('suno_tracks', JSON.stringify(defaultTracks));
+
+      const container = document.getElementById('trackList');
+      container.innerHTML = '';
+
+      tracks.forEach(track => {
+        container.innerHTML += `
+          <div onclick="playTrack('${track.title}', '${track.genre}', '${track.audioUrl}')" class="glass-card p-3 rounded-xl flex items-center justify-between cursor-pointer hover:border-purple-500/50 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-purple-900/40 flex items-center justify-center text-purple-400">
+                <i data-lucide="music" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm">${track.title}</h4>
+                <p class="text-xs text-gray-400">${track.genre}</p>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-500"></i>
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    function playTrack(title, genre, audioUrl) {
+      localStorage.setItem('current_track', JSON.stringify({ title, genre, audioUrl }));
+      window.location.href = 'player.html';
+    }
+
+    loadTracks();
   </script>
 </body>
 </html>
