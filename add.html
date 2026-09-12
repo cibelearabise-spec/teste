@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suno Player - Nova Música</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { background-color: #0B0914; font-family: system-ui, sans-serif; }
+    .glass-card { background: rgba(23, 19, 38, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(168, 85, 247, 0.2); }
+  </style>
+</head>
+<body class="text-white flex justify-center items-center min-h-screen p-2 sm:p-4">
+
+  <div class="w-full max-w-sm h-[750px] bg-[#0B0914] rounded-[40px] border-4 border-gray-800 p-5 flex flex-col justify-between relative overflow-hidden shadow-2xl">
+    
+    <div class="z-10">
+      <!-- Topo -->
+      <div class="flex items-center gap-3 pt-2 mb-6">
+        <a href="index.html" class="text-gray-400 hover:text-white"><i data-lucide="chevron-left"></i></a>
+        <h1 class="text-lg font-bold">Adicionar Música Suno</h1>
+      </div>
+
+      <!-- Form -->
+      <form id="addForm" onsubmit="saveTrack(event)" class="space-y-4">
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">Nome da Música</label>
+          <input type="text" id="inputTitle" required placeholder="Ex: Minha Trilha Suno" class="w-full glass-card p-3 rounded-xl text-sm focus:outline-none focus:border-purple-500">
+        </div>
+
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">Gênero / Estilo</label>
+          <input type="text" id="inputGenre" placeholder="Ex: Rock / Pop AI" class="w-full glass-card p-3 rounded-xl text-sm focus:outline-none focus:border-purple-500">
+        </div>
+
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">URL do MP3 (Suno ou Link direto)</label>
+          <input type="url" id="inputUrl" required placeholder="https://cdn.suno.ai/xxx.mp3" class="w-full glass-card p-3 rounded-xl text-sm focus:outline-none focus:border-purple-500">
+        </div>
+
+        <button type="submit" class="w-full bg-purple-600 p-3.5 rounded-xl font-bold text-sm shadow-lg shadow-purple-500/40 hover:bg-purple-500 mt-4">
+          Salvar Músicas no App
+        </button>
+      </form>
+    </div>
+
+    <!-- Navegação Inferior -->
+    <div class="glass-card rounded-full p-3 flex justify-around items-center z-10">
+      <a href="index.html" class="text-gray-400 hover:text-purple-400"><i data-lucide="home"></i></a>
+      <a href="add.html" class="bg-purple-600 p-3 rounded-full text-white shadow-lg shadow-purple-500/50"><i data-lucide="plus"></i></a>
+      <a href="player.html" class="text-gray-400 hover:text-purple-400"><i data-lucide="disc"></i></a>
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function saveTrack(e) {
+      e.preventDefault();
+      const title = document.getElementById('inputTitle').value;
+      const genre = document.getElementById('inputGenre').value || 'Suno AI Track';
+      const audioUrl = document.getElementById('inputUrl').value;
+
+      const stored = localStorage.getItem('suno_tracks');
+      const tracks = stored ? JSON.parse(stored) : [];
+
+      tracks.unshift({ id: Date.now().toString(), title, genre, audioUrl });
+      localStorage.setItem('suno_tracks', JSON.stringify(tracks));
+
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
