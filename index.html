@@ -1,22 +1,92 @@
-<!-- Exemplo de Card no estilo Dark Purple Glassmorphism -->
-<div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1E162D] to-[#120E1C] p-6 border border-purple-500/20 shadow-2xl backdrop-blur-md">
-  <!-- Efeito Glow de Fundo -->
-  <div class="absolute -top-10 -right-10 w-32 h-32 bg-purple-600/30 rounded-full blur-3xl"></div>
-  
-  <div class="flex items-center justify-between mb-4">
-    <span class="text-xs font-semibold tracking-wider text-purple-400 uppercase">Suno Track</span>
-    <button class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-300 hover:bg-purple-500/40">
-      ↗
-    </button>
-  </div>
-  
-  <h3 class="text-xl font-bold text-white mb-1">Nome da Sua Música</h3>
-  <p class="text-sm text-gray-400">Estilo: Synthwave / AI Generated</p>
-  
-  <!-- Player / Visualizador Esférico Neon -->
-  <div class="my-6 flex justify-center">
-    <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-700 via-indigo-500 to-pink-500 animate-pulse flex items-center justify-center shadow-[0_0_30px_rgba(168,85,247,0.5)]">
-      <span class="text-white text-2xl">▶</span>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suno AI Player - Dark Theme</title>
+  <!-- Tailwind CSS via CDN para renderizar na hora -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Ícones do Lucide / Ionicons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bgDark: '#0B0914',
+            cardBg: '#171326',
+            purpleNeon: '#A855F7',
+            purpleGlow: '#8B5CF6',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0B0914;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .glass-card {
+      background: rgba(23, 19, 38, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+    }
+    .glow-sphere {
+      background: radial-gradient(circle at 30% 30%, #EC4899, #8B5CF6, #3B82F6);
+      box-shadow: 0 0 50px rgba(168, 85, 247, 0.6);
+    }
+  </style>
+</head>
+<body class="text-white flex justify-center items-center min-h-screen p-4">
+
+  <!-- Container simulando a tela de um celular -->
+  <div class="w-full max-w-sm h-[750px] bg-[#0B0914] rounded-[40px] border-4 border-gray-800 p-5 flex flex-col justify-between relative overflow-hidden shadow-2xl">
+    
+    <!-- Efeito de Luz de Fundo -->
+    <div class="absolute -top-20 -left-20 w-48 h-48 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Header -->
+    <div class="flex justify-between items-center z-10 pt-4">
+      <div>
+        <p class="text-gray-400 text-sm">Hello, Cibele 👋</p>
+        <h1 class="text-xl font-bold">Make anything you.</h1>
+      </div>
+      <span class="glass-card text-xs text-purple-300 font-semibold px-3 py-1.5 rounded-full flex items-center gap-1">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Suno VIP
+      </span>
     </div>
+
+    <!-- Conteúdo Central: Player Esférico Glow (Fiel à imagem) -->
+    <div class="flex flex-col items-center justify-center my-auto z-10">
+      <p class="text-gray-300 text-lg font-light mb-8">I'm listening...</p>
+
+      <!-- Esfera Roxa com Glow Neon -->
+      <div class="relative flex items-center justify-center w-48 h-48 mb-8">
+        <div class="absolute inset-0 rounded-full bg-purple-600/30 blur-xl animate-pulse"></div>
+        <div class="w-40 h-40 rounded-full glow-sphere flex items-center justify-center transition-transform hover:scale-105">
+          <i data-lucide="play" class="w-12 h-12 text-white fill-white ml-1"></i>
+        </div>
+      </div>
+
+      <h2 class="text-lg font-bold text-white">Cyberpunk Neon Vibe</h2>
+      <p class="text-xs text-gray-400 mt-1">Suno AI Generated Track</p>
+    </div>
+
+    <!-- Menu Inferior Neon (Bottom Nav) -->
+    <div class="glass-card rounded-full p-3 flex justify-around items-center z-10 mb-2">
+      <button class="text-purple-400 p-2"><i data-lucide="home"></i></button>
+      <button class="bg-purple-600 p-3 rounded-full text-white shadow-lg shadow-purple-500/50 hover:bg-purple-500">
+        <i data-lucide="plus"></i>
+      </button>
+      <button class="text-gray-400 p-2 hover:text-purple-400"><i data-lucide="disc"></i></button>
+    </div>
+
   </div>
-</div>
+
+  <script>
+    // Inicializa os ícones do Lucide
+    lucide.createIcons();
+  </script>
+</body>
+</html>
