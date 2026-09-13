@@ -37,17 +37,22 @@
       <form id="addForm" onsubmit="saveTrack(event)" class="space-y-4">
         <div>
           <label class="text-xs text-purple-200 block mb-1">Nome da Música</label>
-          <input type="text" id="inputTitle" required placeholder="Ex: Minha Nova Faixa" class="w-full glass-input p-3.5 rounded-2xl text-sm text-white focus:outline-none">
+          <input type="text" id="inputTitle" required placeholder="Ex: Minha Trilha" class="w-full glass-input p-3.5 rounded-2xl text-sm text-white focus:outline-none">
         </div>
 
         <div>
           <label class="text-xs text-purple-200 block mb-1">Gênero / Estilo</label>
-          <input type="text" id="inputGenre" placeholder="Ex: Rock / Pop AI" class="w-full glass-input p-3.5 rounded-2xl text-sm text-white focus:outline-none">
+          <input type="text" id="inputGenre" placeholder="Ex: Synthwave / K-Pop" class="w-full glass-input p-3.5 rounded-2xl text-sm text-white focus:outline-none">
         </div>
 
         <div>
-          <label class="text-xs text-purple-200 block mb-1">Caminho da Música na Pasta /musicas</label>
+          <label class="text-xs text-purple-200 block mb-1">Link do MP3 (ex: ./musicas/faixa.mp3)</label>
           <input type="text" id="inputUrl" required placeholder="./musicas/minhamusica.mp3" class="w-full glass-input p-3.5 rounded-2xl text-sm text-white focus:outline-none">
+        </div>
+
+        <div>
+          <label class="text-xs text-purple-200 block mb-1">URL da Capa / Imagem (Suno ou Web)</label>
+          <input type="text" id="inputCover" placeholder="https://cdn.suno.ai/image.png" class="w-full glass-input p-3.5 rounded-2xl text-sm text-white focus:outline-none">
         </div>
 
         <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 p-4 rounded-2xl font-bold text-sm shadow-lg hover:from-purple-500 transition mt-2">
@@ -70,14 +75,15 @@
     function saveTrack(e) {
       e.preventDefault();
       const title = document.getElementById('inputTitle').value;
-      const genre = document.getElementById('inputGenre').value || 'Suno AI Track';
+      const genre = document.getElementById('inputGenre').value || 'Suno AI';
       const audioUrl = document.getElementById('inputUrl').value;
+      const coverUrl = document.getElementById('inputCover').value;
 
-      const stored = localStorage.getItem('suno_tracks_v2');
+      const stored = localStorage.getItem('suno_tracks_v3');
       const tracks = stored ? JSON.parse(stored) : [];
 
-      tracks.unshift({ id: Date.now().toString(), title, genre, audioUrl });
-      localStorage.setItem('suno_tracks_v2', JSON.stringify(tracks));
+      tracks.unshift({ id: Date.now().toString(), title, genre, audioUrl, coverUrl });
+      localStorage.setItem('suno_tracks_v3', JSON.stringify(tracks));
 
       window.location.href = 'index.html';
     }
