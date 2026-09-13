@@ -31,7 +31,7 @@
     "id": "5",
     "title": "Shadows in the Dark",
     "genre": "Pop, suspenseful, cinematic, electronic with pulsing basslines and eerie synths, ideal for building tension",
-    "audioUrl": "musicas/Shadows in the Dark.mp3",
+    "audioUrl": "musicas/shadows_in_the_dark.mp3",
     "coverUrl": "https://cdn2.suno.ai/image_large_3e9f6167-521e-412b-8258-1398eeda2d33.jpeg"
   
 },
@@ -39,7 +39,7 @@
     "id": "6",
     "title": "Whisper in the shadows",
     "genre": "Modern AI",
-    "audioUrl": "musicas/Whisper in the shadows.mp3",
+    "audioUrl": "musicas/whisper_in_the_shadows.mp3",
     "coverUrl": "https://cdn2.suno.ai/image_large_b3ef4542-59ce-4efc-b072-072c1676328c.jpeg"
   }
     ]
