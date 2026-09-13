@@ -89,7 +89,8 @@
 
     async function loadData() {
       try {
-        const response = await fetch('musicas.json');
+        // Adicionado ?v= + Date.now() para ignorar o cache e carregar sempre o arquivo novo
+        const response = await fetch('musicas.json?v=' + Date.now());
         allTracks = await response.json();
         
         renderGenreChips();
@@ -101,7 +102,6 @@
     }
 
     function renderGenreChips() {
-      // Pega apenas a primeira palavra/estilo do gênero para montar os botões curtos
       const mainGenres = allTracks.map(t => {
         if (!t.genre) return 'Geral';
         return t.genre.split(',')[0].split('/')[0].trim();
