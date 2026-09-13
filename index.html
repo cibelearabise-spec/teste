@@ -26,7 +26,6 @@
 </head>
 <body class="text-white flex justify-center items-center min-h-screen p-2 sm:p-4">
 
-  <!-- Frame do Celular -->
   <div class="w-full max-w-sm h-[750px] bg-gradient-to-b from-[#280E52] via-[#1A0938] to-[#0D041D] rounded-[40px] border-4 border-purple-900/50 p-5 flex flex-col justify-between relative overflow-hidden shadow-[0_0_50px_rgba(147,51,234,0.3)]">
     
     <div class="absolute -top-10 -left-10 w-56 h-56 bg-purple-500/30 rounded-full blur-3xl pointer-events-none"></div>
@@ -55,10 +54,12 @@
 
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-xs font-semibold text-purple-200/80 uppercase tracking-wider">Suas Músicas do Suno</h2>
-        <span id="trackCount" class="text-xs text-purple-400 font-medium">0 faixas</span>
+        <span id="trackCount" class="text-xs text-purple-400 font-medium">Buscando...</span>
       </div>
 
-      <div id="trackList" class="space-y-3"></div>
+      <div id="trackList" class="space-y-3">
+        <p class="text-xs text-purple-300/60 text-center py-4">Carregando faixas da pasta...</p>
+      </div>
     </div>
 
     <div class="glass-card rounded-full p-3 flex justify-around items-center z-10 mt-2">
@@ -74,57 +75,78 @@
   <script>
     lucide.createIcons();
 
-    // CAMINHOS EXATOS CONFORME SUA PASTA /musicas NO GITHUB
-    const defaultTracks = [
-      { 
-        id: '1', 
-        title: 'Protocole', 
-        genre: 'Spoken Word / Indie French', 
-        audioUrl: 'musicas/Protocole.mp3',
-        coverUrl: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&q=80' 
-      },
-      { 
-        id: '2', 
-        title: 'Bilionaire Frequency', 
-        genre: 'Modern AI Anthem', 
-        audioUrl: 'musicas/Bilionaire frequency.mp3',
-        coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80'
-      }
-    ];
+    // LEITURA AUTOMÁTICA DA PASTA VIA GITHUB API
+    const REPO_USER = 'cibelearabise-spec';
+    const REPO_NAME = 'teste';
+    const FOLDER_PATH = 'musicas';
 
-    function loadTracks() {
-      // Força a atualização do cache local com a versão corrigida
-      localStorage.setItem('suno_tracks_v4', JSON.stringify(defaultTracks));
-      const tracks = defaultTracks;
-
+    async function loadTracksFromGithub() {
       const container = document.getElementById('trackList');
       const trackCount = document.getElementById('trackCount');
-      
-      container.innerHTML = '';
-      trackCount.innerText = `${tracks.length} ${tracks.length === 1 ? 'faixa' : 'faixas'}`;
 
-      tracks.forEach((track) => {
-        const coverImage = track.coverUrl 
-          ? `<img src="${track.coverUrl}" class="w-11 h-11 rounded-xl object-cover shadow-md">`
-          : `<div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center text-white"><i data-lucide="music" class="w-5 h-5"></i></div>`;
+      try {
+        const response = await fetch(`https://api.github.com/repos/${REPO_USER}/${REPO_NAME}/contents/${FOLDER_PATH}`);
+        
+        if (!response.ok) throw new Error('Não foi possível ler a pasta');
+        
+        const files = await response.json();
+        
+        // Filtra apenas arquivos que terminam com .mp3
+        const mp3Files = files.filter(file => file.name.endsWith('.mp3'));
 
-        container.innerHTML += `
-          <div onclick="playTrack('${encodeURIComponent(JSON.stringify(track))}')" class="glass-card glass-card-hover p-2.5 rounded-2xl flex items-center justify-between cursor-pointer transition-all group">
-            <div class="flex items-center gap-3">
-              ${coverImage}
-              <div class="max-w-[160px]">
-                <h4 class="font-bold text-sm text-purple-50 truncate">${track.title}</h4>
-                <p class="text-xs text-purple-300/70 truncate">${track.genre}</p>
+        if (mp3Files.length === 0) {
+          container.innerHTML = '<p class="text-xs text-purple-300/60 text-center py-4">Nenhuma música encontrada na pasta /musicas.</p>';
+          trackCount.innerText = '0 faixas';
+          return;
+        }
+
+        container.innerHTML = '';
+        trackCount.innerText = `${mp3Files.length} ${mp3Files.length === 1 ? 'faixa' : 'faixas'}`;
+
+        // Capas padronizadas para alternar automaticamente
+        const defaultCovers = [
+          'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&q=80',
+          'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&q=80',
+          'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80',
+          'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&q=80'
+        ];
+
+        mp3Files.forEach((file, index) => {
+          // Formata o título removendo o .mp3 e substituindo _ por espaço
+          const rawTitle = file.name.replace('.mp3', '').replace(/_/g, ' ');
+          const formattedTitle = rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1);
+          
+          const track = {
+            id: file.sha,
+            title: formattedTitle,
+            genre: 'Suno Track',
+            audioUrl: file.path, // Caminho direto: musicas/nome.mp3
+            coverUrl: defaultCovers[index % defaultCovers.length]
+          };
+
+          container.innerHTML += `
+            <div onclick="playTrack('${encodeURIComponent(JSON.stringify(track))}')" class="glass-card glass-card-hover p-2.5 rounded-2xl flex items-center justify-between cursor-pointer transition-all group">
+              <div class="flex items-center gap-3">
+                <img src="${track.coverUrl}" class="w-11 h-11 rounded-xl object-cover shadow-md">
+                <div class="max-w-[160px]">
+                  <h4 class="font-bold text-sm text-purple-50 truncate">${track.title}</h4>
+                  <p class="text-xs text-purple-300/70 truncate">${track.genre}</p>
+                </div>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-300 group-hover:bg-purple-500 group-hover:text-white transition">
+                <i data-lucide="play" class="w-4 h-4 fill-current ml-0.5"></i>
               </div>
             </div>
-            <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-300 group-hover:bg-purple-500 group-hover:text-white transition">
-              <i data-lucide="play" class="w-4 h-4 fill-current ml-0.5"></i>
-            </div>
-          </div>
-        `;
-      });
+          `;
+        });
 
-      lucide.createIcons();
+        lucide.createIcons();
+
+      } catch (error) {
+        console.error(error);
+        container.innerHTML = '<p class="text-xs text-red-400 text-center py-4">Erro ao carregar a lista de músicas.</p>';
+        trackCount.innerText = 'Erro';
+      }
     }
 
     function playTrack(encodedTrack) {
@@ -133,7 +155,7 @@
       window.location.href = 'player.html';
     }
 
-    loadTracks();
+    loadTracksFromGithub();
   </script>
 </body>
 </html>
