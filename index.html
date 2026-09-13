@@ -85,11 +85,11 @@
     lucide.createIcons();
 
     let allTracks = [];
+    let currentFilteredTracks = [];
     let selectedGenre = 'Todos';
 
     async function loadData() {
       try {
-        // Adicionado ?v= + Date.now() para ignorar o cache e carregar sempre o arquivo novo
         const response = await fetch('musicas.json?v=' + Date.now());
         allTracks = await response.json();
         
@@ -143,7 +143,7 @@
       const query = document.getElementById('searchInput').value.toLowerCase();
       const favs = getFavorites();
 
-      let filtered = allTracks.filter(track => {
+      currentFilteredTracks = allTracks.filter(track => {
         const matchesSearch = track.title.toLowerCase().includes(query) || track.genre.toLowerCase().includes(query);
         const mainGenre = track.genre ? track.genre.split(',')[0].split('/')[0].trim() : 'Geral';
         
@@ -152,7 +152,7 @@
         return matchesSearch && mainGenre === selectedGenre;
       });
 
-      renderTracks(filtered);
+      renderTracks(currentFilteredTracks);
     }
 
     function renderTracks(tracks) {
@@ -168,10 +168,10 @@
         return;
       }
 
-      tracks.forEach(track => {
+      tracks.forEach((track, index) => {
         const isFav = favs.includes(track.id);
         container.innerHTML += `
-          <div onclick="playTrack('${encodeURIComponent(JSON.stringify(track))}')" class="glass-card glass-card-hover p-2.5 rounded-2xl flex items-center justify-between cursor-pointer transition-all group">
+          <div onclick="playTrackByIndex(${index})" class="glass-card glass-card-hover p-2.5 rounded-2xl flex items-center justify-between cursor-pointer transition-all group">
             <div class="flex items-center gap-3">
               <img src="${track.coverUrl}" class="w-11 h-11 rounded-xl object-cover shadow-md">
               <div class="max-w-[140px]">
@@ -195,10 +195,12 @@
       lucide.createIcons();
     }
 
-    function playTrack(encodedTrack) {
-      const track = JSON.parse(decodeURIComponent(encodedTrack));
-      localStorage.setItem('current_track', JSON.stringify(track));
-      window.location.href = 'player.html';
+    function playTrackByIndex(index) {
+      const track = currentFilteredTracks[index];
+      if (track) {
+        localStorage.setItem('current_track', JSON.stringify(track));
+        window.location.href = 'player.html';
+      }
     }
 
     loadData();
