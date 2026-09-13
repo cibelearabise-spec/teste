@@ -26,7 +26,6 @@
       background: rgba(15, 7, 32, 0.5);
       border: 1px solid rgba(192, 132, 252, 0.3);
     }
-    /* Esconde barra de rolagem dos gêneros */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
@@ -97,12 +96,18 @@
         filterTracks();
       } catch (err) {
         console.error("Erro ao carregar musicas.json", err);
-        document.getElementById('trackList').innerHTML = '<p class="text-xs text-red-400 text-center py-4">Crie o arquivo musicas.json no GitHub.</p>';
+        document.getElementById('trackList').innerHTML = '<p class="text-xs text-red-400 text-center py-4">Verifique se o arquivo musicas.json existe no GitHub e está sem erros.</p>';
       }
     }
 
     function renderGenreChips() {
-      const genres = ['Todos', 'Favoritos', ...new Set(allTracks.map(t => t.genre))];
+      // Pega apenas a primeira palavra/estilo do gênero para montar os botões curtos
+      const mainGenres = allTracks.map(t => {
+        if (!t.genre) return 'Geral';
+        return t.genre.split(',')[0].split('/')[0].trim();
+      });
+      
+      const genres = ['Todos', 'Favoritos', ...new Set(mainGenres)];
       const container = document.getElementById('genreContainer');
       
       container.innerHTML = genres.map(genre => `
@@ -140,10 +145,11 @@
 
       let filtered = allTracks.filter(track => {
         const matchesSearch = track.title.toLowerCase().includes(query) || track.genre.toLowerCase().includes(query);
+        const mainGenre = track.genre ? track.genre.split(',')[0].split('/')[0].trim() : 'Geral';
         
         if (selectedGenre === 'Todos') return matchesSearch;
         if (selectedGenre === 'Favoritos') return matchesSearch && favs.includes(track.id);
-        return matchesSearch && track.genre === selectedGenre;
+        return matchesSearch && mainGenre === selectedGenre;
       });
 
       renderTracks(filtered);
