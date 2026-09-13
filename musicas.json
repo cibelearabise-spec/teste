@@ -26,5 +26,11 @@
     "genre": "Modern AI",
     "audioUrl": "musicas/Bilionaire frequency.mp3",
     "coverUrl": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&q=80"
+  },
+  {
+    "id": "5",
+    "title": "Shadows in the Dark",
+    "genre": "Pop",
+    "audioUrl": "musicas/Shadows in the Dark.mp3",
+    "coverUrl": "https://cdn2.suno.ai/image_large_3e9f6167-521e-412b-8258-1398eeda2d33.jpeg"
   }
-]
