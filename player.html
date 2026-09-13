@@ -17,9 +17,12 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(216, 180, 254, 0.2);
     }
-    .glow-sphere {
-      background: radial-gradient(circle at 30% 30%, #EC4899, #8B5CF6, #3B82F6);
-      box-shadow: 0 0 50px rgba(168, 85, 247, 0.7);
+    .cover-spin {
+      animation: spin 20s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -30,34 +33,36 @@
     <!-- Topo -->
     <div class="flex justify-between items-center z-10 pt-2">
       <a href="index.html" class="text-purple-300 hover:text-white transition"><i data-lucide="chevron-left" class="w-6 h-6"></i></a>
-      <p class="text-xs text-purple-300/80 uppercase tracking-widest font-semibold">Suno Assistant</p>
+      <p class="text-xs text-purple-300/80 uppercase tracking-widest font-semibold">TOCANDO AGORA</p>
       <i data-lucide="more-vertical" class="text-purple-300 w-5 h-5"></i>
     </div>
 
-    <!-- Centro: Esfera e Informações -->
+    <!-- Capa da Música -->
     <div class="flex flex-col items-center justify-center my-auto z-10">
-      <p id="statusText" class="text-purple-200 text-lg font-light mb-8">Ready to play...</p>
-
-      <div class="relative flex items-center justify-center w-48 h-48 mb-8">
-        <div id="glowPulse" class="absolute inset-0 rounded-full bg-purple-600/30 blur-xl"></div>
-        <div id="sphereBtn" onclick="togglePlay()" class="w-40 h-40 rounded-full glow-sphere flex items-center justify-center cursor-pointer transition-transform hover:scale-105 active:scale-95">
-          <i id="playIcon" data-lucide="play" class="w-12 h-12 text-white fill-white ml-1"></i>
-        </div>
+      <div class="relative flex items-center justify-center w-56 h-56 mb-6">
+        <div id="glowBg" class="absolute inset-0 rounded-3xl bg-purple-600/30 blur-2xl transition-all"></div>
+        <img id="trackCover" src="" class="w-52 h-52 rounded-3xl object-cover shadow-2xl relative z-10 border border-purple-300/20">
       </div>
 
-      <h2 id="trackTitle" class="text-xl font-bold text-white text-center">Selecione uma música</h2>
-      <p id="trackGenre" class="text-xs text-purple-300/70 mt-1">Suno AI Generated</p>
+      <h2 id="trackTitle" class="text-xl font-bold text-white text-center">---</h2>
+      <p id="trackGenre" class="text-xs text-purple-300/70 mt-1 text-center">---</p>
     </div>
 
-    <!-- Áudio do Navegador -->
+    <!-- Áudio -->
     <audio id="audioPlayer"></audio>
 
-    <!-- Barra de Controles Inferior -->
+    <!-- Botão Principal de Play/Pause -->
+    <div class="glass-card rounded-3xl p-4 flex flex-col gap-4 z-10 mb-2">
+      <div class="flex justify-center items-center gap-6">
+        <button onclick="togglePlay()" class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/50 hover:scale-105 transition">
+          <i id="playIcon" data-lucide="play" class="w-7 h-7 fill-white ml-1"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navegação -->
     <div class="glass-card rounded-full p-3 flex justify-around items-center z-10">
       <a href="index.html" class="text-purple-300/70 hover:text-white"><i data-lucide="home"></i></a>
-      <button onclick="togglePlay()" class="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full text-white shadow-lg shadow-purple-500/50 hover:scale-105 transition">
-        <i id="controlBtnIcon" data-lucide="play" class="w-5 h-5 fill-white"></i>
-      </button>
       <a href="add.html" class="text-purple-300/70 hover:text-white"><i data-lucide="plus"></i></a>
     </div>
 
@@ -68,46 +73,33 @@
 
     const audio = document.getElementById('audioPlayer');
     const playIcon = document.getElementById('playIcon');
-    const controlBtnIcon = document.getElementById('controlBtnIcon');
-    const statusText = document.getElementById('statusText');
-    const glowPulse = document.getElementById('glowPulse');
+    const trackCover = document.getElementById('trackCover');
 
     const currentTrack = JSON.parse(localStorage.getItem('current_track')) || {
       title: 'Protocole',
       genre: 'Spoken Word / Indie French',
-      audioUrl: './musicas/protocole.mp3'
+      audioUrl: './musicas/protocole.mp3',
+      coverUrl: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&q=80'
     };
 
     document.getElementById('trackTitle').innerText = currentTrack.title;
     document.getElementById('trackGenre').innerText = currentTrack.genre;
+    trackCover.src = currentTrack.coverUrl || 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&q=80';
     audio.src = currentTrack.audioUrl;
 
     function togglePlay() {
       if (audio.paused) {
         audio.play().then(() => {
-          statusText.innerText = "Playing track...";
-          glowPulse.classList.add('animate-pulse');
-          updateIcons(true);
-        }).catch(err => {
-          alert("Não foi possível carregar o arquivo de áudio. Verifique se o caminho na pasta /musicas está correto.");
+          playIcon.setAttribute('data-lucide', 'pause');
+          trackCover.classList.add('cover-spin');
+          lucide.createIcons();
         });
       } else {
         audio.pause();
-        statusText.innerText = "Paused";
-        glowPulse.classList.remove('animate-pulse');
-        updateIcons(false);
-      }
-    }
-
-    function updateIcons(isPlaying) {
-      if (isPlaying) {
-        playIcon.setAttribute('data-lucide', 'pause');
-        controlBtnIcon.setAttribute('data-lucide', 'pause');
-      } else {
         playIcon.setAttribute('data-lucide', 'play');
-        controlBtnIcon.setAttribute('data-lucide', 'play');
+        trackCover.classList.remove('cover-spin');
+        lucide.createIcons();
       }
-      lucide.createIcons();
     }
   </script>
 </body>
