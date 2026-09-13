@@ -7,54 +7,77 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    body { background-color: #0B0914; font-family: system-ui, sans-serif; }
-    .glass-card { background: rgba(23, 19, 38, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(168, 85, 247, 0.2); }
+    body {
+      background: linear-gradient(135deg, #180B30 0%, #3B1578 50%, #200B4B 100%);
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(216, 180, 254, 0.2);
+    }
+    .glass-card-hover:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(192, 132, 252, 0.5);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+    }
   </style>
 </head>
 <body class="text-white flex justify-center items-center min-h-screen p-2 sm:p-4">
 
-  <div class="w-full max-w-sm h-[750px] bg-[#0B0914] rounded-[40px] border-4 border-gray-800 p-5 flex flex-col justify-between relative overflow-hidden shadow-2xl">
+  <!-- Frame do Celular -->
+  <div class="w-full max-w-sm h-[750px] bg-gradient-to-b from-[#280E52] via-[#1A0938] to-[#0D041D] rounded-[40px] border-4 border-purple-900/50 p-5 flex flex-col justify-between relative overflow-hidden shadow-[0_0_50px_rgba(147,51,234,0.3)]">
     
-    <!-- Fundo Glow -->
-    <div class="absolute -top-20 -left-20 w-48 h-48 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- Luzes Neon de Fundo -->
+    <div class="absolute -top-10 -left-10 w-56 h-56 bg-purple-500/30 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 -right-10 w-48 h-48 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="z-10 overflow-y-auto pr-1">
-      <!-- Topo -->
+      <!-- Topo da Tela -->
       <div class="flex justify-between items-center pt-2 mb-6">
         <div>
-          <p class="text-gray-400 text-sm">Hello 👋</p>
-          <h1 class="text-xl font-bold">Suno Player</h1>
+          <p class="text-purple-300/80 text-sm">Hello 👋</p>
+          <h1 class="text-xl font-bold text-white tracking-wide">Suno Player</h1>
         </div>
-        <span class="glass-card text-xs text-purple-300 font-semibold px-3 py-1.5 rounded-full flex items-center gap-1">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> VIP
+        <span class="glass-card text-xs text-purple-200 font-semibold px-3 py-1.5 rounded-full flex items-center gap-1">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-pink-400"></i> VIP
         </span>
       </div>
 
-      <!-- Acesso Rápido ao Player -->
-      <div class="glass-card p-4 rounded-2xl mb-6 flex justify-between items-center">
+      <!-- Banner Rápido para o Tocador -->
+      <div class="glass-card p-4 rounded-2xl mb-6 flex justify-between items-center border-l-4 border-l-purple-500">
         <div>
-          <h3 class="font-bold text-sm">Player Estelar</h3>
-          <p class="text-xs text-gray-400">Ir para o tocador visual</p>
+          <h3 class="font-bold text-sm text-purple-100">Player Estelar</h3>
+          <p class="text-xs text-purple-300/70">Ir para o tocador visual</p>
         </div>
-        <a href="player.html" class="bg-purple-600 p-2.5 rounded-xl text-white hover:bg-purple-500">
-          <i data-lucide="play" class="w-5 h-5"></i>
+        <a href="player.html" class="bg-gradient-to-r from-purple-600 to-indigo-600 p-2.5 rounded-xl text-white hover:from-purple-500 hover:to-indigo-500 shadow-md shadow-purple-600/30 transition">
+          <i data-lucide="play" class="w-5 h-5 fill-white"></i>
         </a>
       </div>
 
       <!-- Lista de Músicas -->
-      <h2 class="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wider">Suas Músicas Suno</h2>
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-xs font-semibold text-purple-200/80 uppercase tracking-wider">Suas Músicas do Suno</h2>
+        <span id="trackCount" class="text-xs text-purple-400 font-medium">0 faixas</span>
+      </div>
+
       <div id="trackList" class="space-y-3">
-        <!-- As músicas serão carregadas aqui via JavaScript -->
+        <!-- Músicas inseridas dinamicamente pelo JavaScript -->
       </div>
     </div>
 
-    <!-- Navegação Inferior -->
+    <!-- Navegação Inferior Gloss -->
     <div class="glass-card rounded-full p-3 flex justify-around items-center z-10 mt-2">
-      <a href="index.html" class="text-purple-400 p-2"><i data-lucide="home"></i></a>
-      <a href="add.html" class="bg-purple-600 p-3 rounded-full text-white shadow-lg shadow-purple-500/50 hover:bg-purple-500">
-        <i data-lucide="plus"></i>
+      <a href="index.html" class="bg-gradient-to-r from-purple-500 to-pink-500 p-2.5 rounded-full text-white shadow-lg shadow-purple-500/50">
+        <i data-lucide="home" class="w-5 h-5"></i>
       </a>
-      <a href="player.html" class="text-gray-400 p-2 hover:text-purple-400"><i data-lucide="disc"></i></a>
+      <a href="add.html" class="text-purple-300/70 hover:text-white transition p-2">
+        <i data-lucide="plus" class="w-6 h-6"></i>
+      </a>
+      <a href="player.html" class="text-purple-300/70 hover:text-white transition p-2">
+        <i data-lucide="disc" class="w-5 h-5"></i>
+      </a>
     </div>
 
   </div>
@@ -62,7 +85,7 @@
   <script>
     lucide.createIcons();
 
-    // Músicas Padrão caso o armazenamento esteja vazio
+    // Faixas de exemplo (caso ainda não tenha subido nenhum arquivo)
     const defaultTracks = [
       { id: '1', title: 'Cyberpunk Neon Vibe', genre: 'Synthwave / Suno AI', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
       { id: '2', title: 'Lo-Fi Chill Beats', genre: 'Relax / Suno AI', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' }
@@ -71,32 +94,54 @@
     function loadTracks() {
       const stored = localStorage.getItem('suno_tracks');
       const tracks = stored ? JSON.parse(stored) : defaultTracks;
-      if (!stored) localStorage.setItem('suno_tracks', JSON.stringify(defaultTracks));
+      
+      if (!stored) {
+        localStorage.setItem('suno_tracks', JSON.stringify(defaultTracks));
+      }
 
       const container = document.getElementById('trackList');
+      const trackCount = document.getElementById('trackCount');
+      
       container.innerHTML = '';
+      trackCount.innerText = `${tracks.length} ${tracks.length === 1 ? 'faixa' : 'faixas'}`;
 
-      tracks.forEach(track => {
+      if (tracks.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 glass-card rounded-2xl">
+            <i data-lucide="music-4" class="w-10 h-10 text-purple-400 mx-auto mb-2 opacity-50"></i>
+            <p class="text-xs text-purple-200">Nenhuma música cadastrada.</p>
+            <a href="add.html" class="text-xs text-pink-400 font-bold underline mt-1 block">Enviar do PC</a>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      tracks.forEach((track, index) => {
         container.innerHTML += `
-          <div onclick="playTrack('${track.title}', '${track.genre}', '${track.audioUrl}')" class="glass-card p-3 rounded-xl flex items-center justify-between cursor-pointer hover:border-purple-500/50 transition">
+          <div onclick="playTrack('${encodeURIComponent(JSON.stringify(track))}')" class="glass-card glass-card-hover p-3 rounded-2xl flex items-center justify-between cursor-pointer transition-all duration-200 group">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-purple-900/40 flex items-center justify-center text-purple-400">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-purple-900/50 group-hover:scale-105 transition">
                 <i data-lucide="music" class="w-5 h-5"></i>
               </div>
-              <div>
-                <h4 class="font-bold text-sm">${track.title}</h4>
-                <p class="text-xs text-gray-400">${track.genre}</p>
+              <div class="max-w-[170px] truncate">
+                <h4 class="font-bold text-sm text-purple-50 truncate">${track.title}</h4>
+                <p class="text-xs text-purple-300/70 truncate">${track.genre}</p>
               </div>
             </div>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-500"></i>
+            <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-300 group-hover:bg-purple-500 group-hover:text-white transition">
+              <i data-lucide="play" class="w-4 h-4 fill-current ml-0.5"></i>
+            </div>
           </div>
         `;
       });
+
       lucide.createIcons();
     }
 
-    function playTrack(title, genre, audioUrl) {
-      localStorage.setItem('current_track', JSON.stringify({ title, genre, audioUrl }));
+    function playTrack(encodedTrack) {
+      const track = JSON.parse(decodeURIComponent(encodedTrack));
+      localStorage.setItem('current_track', JSON.stringify(track));
       window.location.href = 'player.html';
     }
 
