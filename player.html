@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suno Player - Tocador</title>
+  <title>Suno Player - Tocando Agora</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
@@ -17,53 +17,61 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(216, 180, 254, 0.2);
     }
-    .cover-spin {
-      animation: spin 20s linear infinite;
-    }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
   </style>
 </head>
 <body class="text-white flex justify-center items-center min-h-screen p-2 sm:p-4">
 
-  <div class="w-full max-w-sm h-[750px] bg-gradient-to-b from-[#280E52] via-[#1A0938] to-[#0D041D] rounded-[40px] border-4 border-purple-900/50 p-5 flex flex-col justify-between relative overflow-hidden shadow-[0_0_50px_rgba(147,51,234,0.3)]">
+  <div class="w-full max-w-sm h-[750px] bg-gradient-to-b from-[#280E52] via-[#1A0938] to-[#0D041D] rounded-[40px] border-4 border-purple-900/50 p-6 flex flex-col justify-between relative overflow-hidden shadow-[0_0_50px_rgba(147,51,234,0.3)]">
     
-    <!-- Topo -->
+    <div class="absolute -top-10 -left-10 w-56 h-56 bg-purple-500/30 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 -right-10 w-48 h-48 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Top Header -->
     <div class="flex justify-between items-center z-10 pt-2">
-      <a href="index.html" class="text-purple-300 hover:text-white transition"><i data-lucide="chevron-left" class="w-6 h-6"></i></a>
-      <p class="text-xs text-purple-300/80 uppercase tracking-widest font-semibold">TOCANDO AGORA</p>
-      <i data-lucide="more-vertical" class="text-purple-300 w-5 h-5"></i>
+      <a href="index.html" class="glass-card p-2.5 rounded-full text-purple-200 hover:text-white transition">
+        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+      </a>
+      <p class="text-xs font-semibold text-purple-300 uppercase tracking-widest">Tocando Agora</p>
+      <div class="w-9"></div>
     </div>
 
-    <!-- Capa da Música -->
-    <div class="flex flex-col items-center justify-center my-auto z-10">
-      <div class="relative flex items-center justify-center w-56 h-56 mb-6">
-        <div id="glowBg" class="absolute inset-0 rounded-3xl bg-purple-600/30 blur-2xl transition-all"></div>
-        <img id="trackCover" src="" class="w-52 h-52 rounded-3xl object-cover shadow-2xl relative z-10 border border-purple-300/20">
+    <!-- Capa e Informações da Música -->
+    <div class="flex flex-col items-center z-10 my-auto">
+      <div class="relative w-64 h-64 mb-6 group">
+        <img id="coverImg" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=500&q=80" class="w-full h-full rounded-3xl object-cover shadow-2xl shadow-purple-950/80 border border-purple-400/20">
       </div>
 
-      <h2 id="trackTitle" class="text-xl font-bold text-white text-center">---</h2>
-      <p id="trackGenre" class="text-xs text-purple-300/70 mt-1 text-center">---</p>
+      <h2 id="trackTitle" class="text-xl font-bold text-white text-center tracking-wide truncate max-w-[260px]">Carregando...</h2>
+      <p id="trackGenre" class="text-xs text-purple-300/80 text-center mt-1 truncate max-w-[240px]">Gênero</p>
     </div>
 
-    <!-- Áudio -->
+    <!-- Elemento do Áudio Escondido -->
     <audio id="audioPlayer"></audio>
 
-    <!-- Botão Principal de Play/Pause -->
-    <div class="glass-card rounded-3xl p-4 flex flex-col gap-4 z-10 mb-2">
+    <!-- Controles -->
+    <div class="z-10 space-y-4 mb-2">
+      <!-- Barra de Progresso -->
+      <div>
+        <input type="range" id="progressBar" value="0" min="0" max="100" class="w-full h-1.5 bg-purple-950 rounded-lg appearance-none cursor-pointer accent-pink-500">
+        <div class="flex justify-between text-[10px] text-purple-300/60 mt-1">
+          <span id="currentTime">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+      </div>
+
+      <!-- Botões Play / Pause -->
       <div class="flex justify-center items-center gap-6">
-        <button onclick="togglePlay()" class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/50 hover:scale-105 transition">
-          <i id="playIcon" data-lucide="play" class="w-7 h-7 fill-white ml-1"></i>
+        <button id="playBtn" onclick="togglePlay()" class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/40 hover:scale-105 transition">
+          <i id="playIcon" data-lucide="play" class="w-7 h-7 fill-current ml-1"></i>
         </button>
       </div>
     </div>
 
     <!-- Navegação -->
     <div class="glass-card rounded-full p-3 flex justify-around items-center z-10">
-      <a href="index.html" class="text-purple-300/70 hover:text-white"><i data-lucide="home"></i></a>
-      <a href="add.html" class="text-purple-300/70 hover:text-white"><i data-lucide="plus"></i></a>
+      <a href="index.html" class="text-purple-300/70 hover:text-white transition p-2"><i data-lucide="home" class="w-5 h-5"></i></a>
+      <a href="add.html" class="text-purple-300/70 hover:text-white transition p-2"><i data-lucide="plus" class="w-6 h-6"></i></a>
+      <a href="player.html" class="bg-gradient-to-r from-purple-500 to-pink-500 p-2.5 rounded-full text-white shadow-lg shadow-purple-500/50"><i data-lucide="disc" class="w-5 h-5"></i></a>
     </div>
 
   </div>
@@ -72,34 +80,59 @@
     lucide.createIcons();
 
     const audio = document.getElementById('audioPlayer');
+    const playBtn = document.getElementById('playBtn');
     const playIcon = document.getElementById('playIcon');
-    const trackCover = document.getElementById('trackCover');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
 
-    const currentTrack = JSON.parse(localStorage.getItem('current_track')) || {
-      title: 'Protocole',
-      genre: 'Spoken Word / Indie French',
-      audioUrl: './musicas/protocole.mp3',
-      coverUrl: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&q=80'
-    };
-
-    document.getElementById('trackTitle').innerText = currentTrack.title;
-    document.getElementById('trackGenre').innerText = currentTrack.genre;
-    trackCover.src = currentTrack.coverUrl || 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&q=80';
-    audio.src = currentTrack.audioUrl;
+    const rawTrack = localStorage.getItem('current_track');
+    
+    if (rawTrack) {
+      const track = JSON.parse(rawTrack);
+      document.getElementById('trackTitle').innerText = track.title;
+      document.getElementById('trackGenre').innerText = track.genre;
+      document.getElementById('coverImg').src = track.coverUrl;
+      audio.src = track.audioUrl;
+    }
 
     function togglePlay() {
       if (audio.paused) {
         audio.play().then(() => {
           playIcon.setAttribute('data-lucide', 'pause');
-          trackCover.classList.add('cover-spin');
+          playIcon.classList.remove('ml-1');
           lucide.createIcons();
+        }).catch(err => {
+          alert('Erro ao tocar o áudio. Verifique se o caminho do arquivo MP3 está correto no musicas.json');
+          console.error(err);
         });
       } else {
         audio.pause();
         playIcon.setAttribute('data-lucide', 'play');
-        trackCover.classList.remove('cover-spin');
+        playIcon.classList.add('ml-1');
         lucide.createIcons();
       }
+    }
+
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) {
+        const pct = (audio.currentTime / audio.duration) * 100;
+        progressBar.value = pct;
+        currentTimeEl.innerText = formatTime(audio.currentTime);
+        durationEl.innerText = formatTime(audio.duration);
+      }
+    });
+
+    progressBar.addEventListener('input', () => {
+      if (audio.duration) {
+        audio.currentTime = (progressBar.value / 100) * audio.duration;
+      }
+    });
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
     }
   </script>
 </body>
